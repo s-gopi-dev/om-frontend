@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+.prose {
+  max-width: 100%;
+}
+
+.prose h2 {
+  @apply text-2xl font-bold mt-6 mb-4 text-gray-800;
+}
+
+.prose h3 {
+  @apply text-xl font-bold mt-5 mb-3 text-gray-800;
+}
+
+.prose p {
+  @apply mb-4 text-gray-700 leading-relaxed;
+}
+
+.prose ul {
+  @apply list-disc pl-6 mb-4;
+}
+
+.prose ol {
+  @apply list-decimal pl-6 mb-4;
+}
+
+.prose li {
+  @apply mb-2;
+}
+
+.prose a {
+  @apply text-pink-600 hover:text-pink-700 underline;
+}
+
+.prose code:not(pre code) {
+  @apply bg-gray-100 px-2 py-1 rounded text-sm font-mono;
+}
+
+.prose pre {
+  @apply rounded-lg overflow-hidden my-4;
+}
