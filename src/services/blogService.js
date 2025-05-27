@@ -11,7 +11,7 @@ import api from "./axios";
 
 export const getBlogs = async (page = 1) => {
   try {
-    const response = await api.get('blogs/');
+    const response = await api.get(`blogs/?page=${page}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching blogs:', error);
