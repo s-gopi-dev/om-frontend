@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { refreshToken } from './authService';
 
-const API_URL = 'http://localhost:8000/api/';
+const API_URL = 'http://34.131.197.43/api/';
 
 // Create axios instance
 const api = axios.create({
