@@ -11,6 +11,8 @@ import {
   TrashIcon,
   ArrowLeftIcon,
 } from "@heroicons/react/24/outline";
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 
 const BlogEditPage = () => {
   const { id } = useParams();
@@ -38,6 +40,24 @@ const BlogEditPage = () => {
 
     fetchBlog();
   }, [id, navigate]);
+
+    const modules = {
+    toolbar: [
+      [{ 'header': [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+      ['link', 'image'],
+      ['clean']
+    ],
+  };
+
+  // Quill editor formats configuration
+  const formats = [
+    'header',
+    'bold', 'italic', 'underline', 'strike', 'blockquote',
+    'list', 'bullet', 'indent',
+    'link', 'image'
+  ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -126,14 +146,17 @@ const BlogEditPage = () => {
               >
                 Content
               </label>
-              <textarea
-                id="content"
-                rows={12}
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                required
-              />{" "}
+              <div className="min-h-[300px] [&_.ql-editor]:min-h-[250px] [&_.ql-editor]:max-h-[500px] [&_.ql-editor]:overflow-y-auto">
+                  <ReactQuill
+                  id="content"
+                  theme="snow"
+                  value={content}
+                  onChange={setContent}
+                  modules={modules}
+                  formats={formats}
+                  className="border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-pink-500 focus-within:border-transparent"
+                  />
+              </div>
             </div>{" "}
             <div className="flex justify-between">
               {" "}

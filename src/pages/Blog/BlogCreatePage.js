@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createBlog } from '../../services/blogService';
 import { motion } from 'framer-motion';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
+import DOMPurify from 'dompurify';
 
 const BlogCreatePage = () => {
   const [title, setTitle] = useState('');
@@ -10,6 +13,24 @@ const BlogCreatePage = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   
+  const modules = {
+    toolbar: [
+      [{ 'header': [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+      ['link', 'image'],
+      ['clean']
+    ],
+  };
+
+  // Quill editor formats configuration
+  const formats = [
+    'header',
+    'bold', 'italic', 'underline', 'strike', 'blockquote',
+    'list', 'bullet', 'indent',
+    'link', 'image'
+  ];
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!title || !content) {
@@ -19,7 +40,8 @@ const BlogCreatePage = () => {
 
     try {
       setLoading(true);
-      await createBlog(title, content);
+      const sanitizedContent = DOMPurify.sanitize(content);
+      await createBlog(title, sanitizedContent);
       navigate('/blogs');
     } catch (err) {
        if (error.response?.status === 401) {
@@ -67,14 +89,17 @@ const BlogCreatePage = () => {
               <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-1">
                 Content
               </label>
-              <textarea
+              <div className="min-h-[300px] [&_.ql-editor]:min-h-[250px] [&_.ql-editor]:max-h-[500px] [&_.ql-editor]:overflow-y-auto">
+                <ReactQuill
                 id="content"
-                rows={12}
+                theme="snow"
                 value={content}
-                onChange={(e) => setContent(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                required
-              />
+                onChange={setContent}
+                modules={modules}
+                formats={formats}
+                className="border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-pink-500 focus-within:border-transparent"
+                />
+              </div>
             </div>
             
             <div className="flex justify-end">

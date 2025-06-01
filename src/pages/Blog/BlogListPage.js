@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getBlogs } from '../../services/blogService';
 import { motion } from 'framer-motion';
+import DOMPurify from 'dompurify';
 
 const BlogListPage = () => {
   const [blogs, setBlogs] = useState([]);
@@ -58,9 +59,7 @@ const BlogListPage = () => {
             <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition h-full flex flex-col">
               <div className="p-6 flex-grow">
                 <h2 className="text-xl font-semibold text-gray-800 mb-2">{blog.title}</h2>
-                <p className="text-gray-600 mb-4">
-                  {blog.content.substring(0, 150)}...
-                </p>
+                <p className="text-gray-600 mb-4"dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(blog.content.substring(0, 300))}}></p>
               </div>
               <div className="px-6 py-4 bg-gray-50 flex justify-between items-center">
                 <div className="text-gray-500 text-sm">
