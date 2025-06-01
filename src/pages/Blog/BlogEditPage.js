@@ -13,6 +13,7 @@ import {
 } from "@heroicons/react/24/outline";
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
+import DOMPurify from 'dompurify';
 
 const BlogEditPage = () => {
   const { id } = useParams();
@@ -68,7 +69,8 @@ const BlogEditPage = () => {
 
     try {
       setSaving(true);
-      await updateBlog(id, title, content);
+      const sanitizedContent = DOMPurify.sanitize(content);
+      await updateBlog(id, title, sanitizedContent);
       navigate(`/blogs/${id}`);
     } catch (err) {
       setError("Failed to update blog. Please try again.");
